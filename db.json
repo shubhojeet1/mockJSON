@@ -1,9 +1,33 @@
 {
-    "users":[{"id":1,"name":"sashington0","email":"lwevell0@miitbeian.gov.cn","gender":"Female"},
-    {"id":2,"name":"rlohan1","email":"nfuller1@dropbox.com","gender":"Female"},
-    {"id":3,"name":"bring2","email":"smordan2@hugedomains.com","gender":"Female"},
-    {"id":4,"name":"jmeriguet3","email":"sbreacher3@homestead.com","gender":"Male"},
-    {"id":5,"name":"gpires4","email":"ppurkins4@networksolutions.com","gender":"Male"}],
-    "products":[]
+    "cars":[ {
+        "id": 1,
+        "brand": "Tata",
+        "year": 2019,
+              "type":"Manual",
+        "kms": 10000,
+        "Description": "Tata Altroz with all original documents",
+        "Price": 500000
+      },
+      {
+        "id": 2,
+        "brand": "Tata",
+              "type":"AMT",
+        "year": 2017,
+        "kms": 8000,
+        "Description": "Tata Nexon with all original documents",
+        "Price": 800000
+      }
+    ],
+    "wishlisted_cars":[
+        {
+            "id": 1,
+            "brand": "Tata",
+            "year": 2019,
+                  "type":"Manual",
+            "kms": 10000,
+            "Description": "Tata Altroz with all original documents",
+            "Price": 500000
+          }
+    ]
    
 }
