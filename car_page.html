@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cars Page</title>
+    <style>
+    body {
+        padding: 0;
+        margin: 0;
+        font-family: ProximaNova-Semibold, "Helvetica Neue", Arial, sans-serif,
+          "Apple Color Emoji", "Segoe UI Emoji";
+          background-color: rgb(238, 232, 232);
+      }
+      nav {
+        display: flex;
+        /* border: 1px solid red; */
+        justify-content: space-evenly;
+        background-color: rgb(231, 237, 42);
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+        width: 100%;
+        top: 0;
+        position: sticky;
+        z-index: 999;
+        border-bottom: 6px solid rgb(200, 205, 110);
+      }
+      nav a {
+        text-decoration: none;
+        font-weight: 500;
+        line-height: 30px;
+      }
+      nav a:hover {
+        color: rgb(228, 139, 139);
+      }
+      nav p {
+        text-decoration: none;
+        font-weight: 300;
+      }
+      #cont{
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            grid-template-rows: auto;
+            width: 99%;
+            margin:auto;
+            gap: 10px;
+            margin-top: 100px;
+            height: 5vh;
+        }
+        #cont img{
+            width: 100%;
+            height: 180px;
+            margin-bottom: 8px;
+        }
+        #cont>div{
+            border: 3px solid black;
+            padding-bottom: 10px;
+        }
+        #kms_button{
+            display: flex;
+            width: 68%;
+            justify-content: space-between;
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+
+        #kms_button button{
+         
+            border: none;
+            color: rgb(255, 255, 255);
+            background-color: rgb(24, 88, 60);
+            padding: 4px 5px;
+        }
+        h2{
+            font-size: 1.5em;
+            font-weight: bolder;
+            color: rgb(72, 255, 0);
+            margin-left: 20px;
+        }
+        h4{
+            margin-left: 20px;
+        }
+        #type{
+          margin-left: 20px;
+        }
+        #type span{
+             color: grey;
+             font-size: 13px;
+        }
+        #operation_button{
+            margin-left: 15px;
+            display: flex;
+            justify-content: center;
+        }
+        p{
+            color: rgb(214, 105, 105);
+            font-size: 12px;
+            margin-left: 20px;
+        }
+       
+        #operation_button button{
+            border: 0;
+            padding: 6px 6px;
+            color: white;
+            background-color: black;
+            margin-right: 7px;
+            border-radius: 2px;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="NavSec">
+      <nav>
+        <p>🚔 Masai carWale</p>
+        <a href="index.html"><p>Ad Page</p></a>
+        <a href="car_page.html"><p>Cars Page</p></a>
+        <a href="wishlist_page.html"><p>Wishlist page</p></a>
+      </nav>
+    </div>
+    <div>
+       <select  id="sort_price">
+        <option value="">sort by price</option>
+        <option value="asc">low to high</option>
+        <option value="desc">high to low</option>
+       </select>
+       <select id="sort_kms">
+        <option value="">sort by Kms</option>
+        <option value="asc">low to high</option>
+        <option value="desc">high to low</option>
+
+       </select>
+       <select  id="filter_brand">
+        <option value="">filter by brand</option>
+        <option value="Tata">Tata</option>
+        <option value="Maruti">Maruti</option>
+        <option value="Honda">Honda</option>
+        <option value="Nisaan">Nisaan</option>
+        <option value="Hyndai">Hyundai</option>
+        <option value="Land rover">Land Rover</option>
+       </select>
+
+    </div>
+    <div id="cont">
+
+    </div>
+
+    <script>
+       let url = "https://kaalu.onrender.com/cars"
+        let filter = ""
+        let sort_price_order =""
+        let sort_kms_order = ""
+
+        document.getElementById('filter_brand').addEventListener('change',(e)=>{
+            let brand = e.target.value
+            filter = brand
+            console.log(brand);
+            let my_url = `https://kaalu.onrender.com/cars?brand=${brand}`
+            if(brand !== "" && sort_price_order === ""  && sort_kms_order === ""){
+                getdata(my_url)
+            }
+            else if(brand !== "" && sort_price_order !== ""  && sort_kms_order === ""){
+                my_url = `https://kaalu.onrender.com/cars?brand=${brand}&_sort=Price&_order=${sort_price_order}`
+                getdata(my_url)
+            }
+            else if(brand !== "" && sort_price_order === ""  && sort_kms_order !== ""){
+                my_url = `https://kaalu.onrender.com/cars?brand=${brand}&_sort=kms&_order=${sort_kms_order}`
+                getdata(my_url)
+            }
+            else if(brand !== "" && sort_price_order !== ""  && sort_kms_order !== ""){
+                my_url = `https://kaalu.onrender.com/cars?brand=${brand}&_sort=kms,Price&_order=${sort_kms_order},${sort_price_order}`
+                getdata(my_url)
+            }
+        })
+
+        document.getElementById('sort_price').addEventListener('change',(e)=>{
+            let order = e.target.value
+            sort_price_order = order
+            console.log(order);
+            let my_url = `https://kaalu.onrender.com/cars?_sort=Price&_order=${order}`
+            if(order!== "" && filter === ""  && sort_kms_order === ""){
+                console.log(order,filter,sort_kms_order,"Price")
+                getdata(my_url)
+            }
+            else if(order !== "" && filter !== ""  && sort_kms_order === ""){
+                my_url = `https://kaalu.onrender.com/cars?brand=${filter}&_sort=Price&_order=${order}`
+                getdata(my_url)
+            }
+            else if(order !== "" && filter === ""  && sort_kms_order !== ""){
+                my_url = `https://kaalu.onrender.com/cars?_sort=Price&_order=${order}&_sort=kms&_order=${sort_kms_order}`
+                getdata(my_url)
+            }
+            else if(order !== "" && filter !== ""  && sort_kms_order !== ""){
+                my_url = `https://kaalu.onrender.com/cars?brand=${filter}&_sort=kms,Price&_order=${sort_kms_order},${sort_price_order}`
+                getdata(my_url)
+            }
+           
+        })
+         document.getElementById('sort_kms').addEventListener('change',(e)=>{
+            let order = e.target.value
+            sort_kms_order = order
+            console.log(order);
+            let my_url = `https://kaalu.onrender.com/cars?_sort=kms&_order=${order}`
+            if(order !== "" && sort_price_order === ""  &&  filter === ""){
+                console.log(order,sort_price_order,filter,'KMS')
+                getdata(my_url)
+            }
+            else if(order !== "" && filter !== ""  && sort_price_order === ""){
+                my_url = `https://kaalu.onrender.com/cars?brand=${filter}&_sort=kms&_order=${order}`
+                getdata(my_url)
+            }
+            else if(order !== "" && filter === ""  && sort_price_order !== ""){
+                my_url = `https://kaalu.onrender.com/cars?_sort=Price&_order=${sort_price_order}&_sort=kms&_order=${order}`
+                getdata(my_url)
+            }
+            else if(order !== "" && filter !== ""  && sort_price_order !== ""){
+                my_url = `https://kaalu.onrender.com/cars?brand=${filter}&_sort=kms,Price&_order=${sort_kms_order},${sort_price_order}`
+                getdata(my_url)
+            }
+           
+        })
+        getdata(url)
+
+
+        async function getdata(url){
+           try{
+            let res = await fetch(url)
+            let data = await res.json()
+            console.log(data)
+            display(data)
+           }
+           catch(err){console.log(err)}
+        }
+         function  display(data){
+            document.getElementById('cont').innerHTML=""
+            data.forEach(({Price,Description,kms,year,brand,type,id}) => {
+                let maindiv = document.createElement('div')
+                let image = document.createElement('img')
+                image.src="https://img.gaadicdn.com/images/car-images/360x240/Hyundai/Verna/6788/1585563123472/221_Starry-Night_121829.jpg"
+               
+                let first_line = document.createElement('h4')
+                first_line.innerText=`${year} ${brand}`
+
+                let Type = document.createElement('div')
+                Type.innerText="XE 1.2 "
+                Type.setAttribute('id',"type")
+                let span_type = document.createElement('span')
+                 span_type.innerText=type
+                 Type.append(span_type)
+
+                 let button_div = document.createElement('div')
+                 button_div.setAttribute('id',"kms_button")
+                 let button1 = document.createElement('button')
+                 button1.innerText=kms
+                 let button2 = document.createElement('button')
+                 button2.innerText="1st Owner"
+                 let button3 = document.createElement('button')
+                 button3.innerText="Petrol"
+                 button_div.append(button1,button2,button3)
+
+                 let Desc = document.createElement('p')
+                 Desc.innerText=Description
+
+                 let price = document.createElement('h2')
+                 price.innerText="₹"+Price
+
+                 let Crud_button= document.createElement('div')
+                 Crud_button.setAttribute('id',"operation_button")
+                 let Crud_button1 = document.createElement('button')
+                 Crud_button1.innerText='Add to wishlist'
+                 Crud_button1.addEventListener('click',()=>{
+                    let ele = {Price,Description,kms,year,brand,type}
+                    addtowishlist(ele)
+                 })
+                 let Crud_button2 = document.createElement('button')
+                 Crud_button2.innerText="Delete"
+                 Crud_button2.addEventListener('click',()=>{
+                    deletelement(id)
+                 })
+                 let Crud_button3 = document.createElement('button')
+                 Crud_button3.innerText="Edit"
+                 Crud_button.append(Crud_button1,Crud_button2,Crud_button3)
+
+                 maindiv.append(image,first_line,Type,button_div,Desc,price,Crud_button)
+                 document.getElementById('cont').append(maindiv)
+            });
+         }
+  
+         async function  deletelement(id){
+            try{
+            let res = await fetch(`https://kaalu.onrender.com/cars/${id}`,{
+                method:'DELETE',
+            }) 
+            let data = await res.json()
+            console.log(data,"Delete Added")
+            alert("Item Deleted ")
+            getdata(url)
+                }
+                catch(err){
+                    console.log(err)
+                }
+         }
+
+    async function  addtowishlist(ele){
+            try{
+            let res = await fetch('https://kaalu.onrender.com/cars/wishlisted_cars',{
+                method:'POST',
+                mode: 'cors',
+                headers: {'Content-Type':'application/json'},
+                body:JSON.stringify(ele)
+            }) 
+            let data = await res.json()
+            console.log(data,"wishlist Added")
+            alert("Added to Wishlist ")
+    }
+    catch(err){
+        console.log(err)
+    }
+    }
+    </script>
+
+  </body>
+</html>
